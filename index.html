@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>槟榔江湖 - 生涯模拟器</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cdefs%3E%3CradialGradient id='body' cx='40%25' cy='35%25'%3E%3Cstop offset='0%25' stop-color='%23a0714f'/%3E%3Cstop offset='35%25' stop-color='%237a4a2e'/%3E%3Cstop offset='70%25' stop-color='%235c3018'/%3E%3Cstop offset='100%25' stop-color='%233a1a0a'/%3E%3C/radialGradient%3E%3CradialGradient id='shine' cx='35%25' cy='30%25'%3E%3Cstop offset='0%25' stop-color='rgba(255,255,255,0.35)'/%3E%3Cstop offset='100%25' stop-color='rgba(255,255,255,0)'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cellipse cx='58' cy='62' rx='26' ry='35' fill='url(%23body)'/%3E%3Cellipse cx='48' cy='48' rx='10' ry='14' fill='url(%23shine)'/%3E%3Cpath d='M40 42 Q38 30 44 24' stroke='%237a4a2e' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3Cpath d='M58 30 L62 22' stroke='%235a3a1e' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3Cpath d='M48 24 L58 14 L72 18 L66 26' fill='%233a7a2e' stroke='%232d5a1e' stroke-width='1.5'/%3E%3Cpath d='M54 20 L52 16 L60 12 L64 18' fill='%234a9a3e' stroke='%233a7a2e' stroke-width='1'/%3E%3Ccircle cx='42' cy='40' r='3' fill='rgba(255,255,255,0.2)'/%3E%3Ccircle cx='46' cy='38' r='2' fill='rgba(255,255,255,0.15)'/%3E%3C/svg%3E">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 主页 -->
+        <div id="home-screen" class="screen active">
+            <div class="home-container">
+                <div class="title-area">
+                    <div class="title-icon">
+                        <svg class="betel-svg" viewBox="0 0 120 140" width="100" height="116">
+                            <!-- 叶片 -->
+                            <path d="M62 28 L78 8 L98 14 L84 30" fill="#3a7a2e" stroke="#2d5a1e" stroke-width="1.5"/>
+                            <path d="M70 22 L66 12 L78 6 L84 18" fill="#4a9a3e" stroke="#3a7a2e" stroke-width="1"/>
+                            <!-- 茎 -->
+                            <path d="M58 32 L56 18" stroke="#5a3a1e" stroke-width="5" fill="none" stroke-linecap="round"/>
+                            <!-- 果实主体 -->
+                            <defs>
+                                <radialGradient id="nutBody" cx="38%" cy="32%">
+                                    <stop offset="0%" stop-color="#c48a5c"/>
+                                    <stop offset="20%" stop-color="#a0714f"/>
+                                    <stop offset="50%" stop-color="#7a4a2e"/>
+                                    <stop offset="80%" stop-color="#5c3018"/>
+                                    <stop offset="100%" stop-color="#3a1a0a"/>
+                                </radialGradient>
+                                <radialGradient id="nutShine" cx="35%" cy="28%">
+                                    <stop offset="0%" stop-color="rgba(255,255,255,0.4)"/>
+                                    <stop offset="60%" stop-color="rgba(255,255,255,0.08)"/>
+                                    <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
+                                </radialGradient>
+                                <filter id="nutShadow">
+                                    <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="rgba(0,0,0,0.5)"/>
+                                </filter>
+                            </defs>
+                            <ellipse cx="62" cy="78" rx="30" ry="40" fill="url(#nutBody)" filter="url(#nutShadow)"/>
+                            <!-- 纹理纹路 -->
+                            <path d="M38 58 Q62 52 86 58" stroke="rgba(0,0,0,0.15)" stroke-width="1.5" fill="none"/>
+                            <path d="M36 70 Q62 64 88 70" stroke="rgba(0,0,0,0.12)" stroke-width="1.5" fill="none"/>
+                            <path d="M38 82 Q62 76 86 82" stroke="rgba(0,0,0,0.1)" stroke-width="1.5" fill="none"/>
+                            <!-- 高光 -->
+                            <ellipse cx="50" cy="60" rx="12" ry="18" fill="url(#nutShine)"/>
+                            <!-- 小光点 -->
+                            <circle cx="46" cy="52" r="3.5" fill="rgba(255,255,255,0.3)"/>
+                            <circle cx="50" cy="48" r="2" fill="rgba(255,255,255,0.2)"/>
+                            <!-- 暗部 -->
+                            <ellipse cx="72" cy="85" rx="14" ry="20" fill="rgba(0,0,0,0.2)"/>
+                        </svg>
+                    </div>
+                    <h1 class="game-title">槟榔江湖</h1>
+                    <p class="subtitle">一颗槟榔的罪恶史</p>
+                </div>
+                <div class="start-area">
+                    <div class="origin-select">
+                        <label>选择出身：</label>
+                        <div class="origin-cards">
+                            <div class="origin-card selected" data-origin="xiangtan">
+                                <span class="origin-icon">🏭</span>
+                                <span class="origin-name">湘潭学徒</span>
+                                <span class="origin-desc">槟榔世家，从小耳濡目染</span>
+                            </div>
+                            <div class="origin-card" data-origin="changsha">
+                                <span class="origin-icon">🏙️</span>
+                                <span class="origin-name">长沙商贩</span>
+                                <span class="origin-desc">街头起家，人脉广泛</span>
+                            </div>
+                            <div class="origin-card" data-origin="yiyang">
+                                <span class="origin-icon">🌾</span>
+                                <span class="origin-name">益阳农户</span>
+                                <span class="origin-desc">种植起家，深谙原料之道</span>
+                            </div>
+                            <div class="origin-card" data-origin="wailai">
+                                <span class="origin-icon">🚶</span>
+                                <span class="origin-name">外来闯荡</span>
+                                <span class="origin-desc">白手起家，一切靠自己</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mode-select">
+                        <label>游戏模式：</label>
+                        <div class="mode-btns">
+                            <button class="mode-btn" data-mode="normal">普通模式</button>
+                            <button class="mode-btn selected" data-mode="hardcore">硬核模式</button>
+                            <button class="mode-btn" data-mode="fast">快进模式</button>
+                        </div>
+                    </div>
+                    <div class="seed-input">
+                        <label>种子（留空随机）：</label>
+                        <input type="text" id="seed-input" placeholder="输入种子编号..." maxlength="20">
+                    </div>
+                    <button class="btn-start" id="btn-start">开始生涯</button>
+                    <button class="btn-history" id="btn-history">📋 历史档案</button>
+                </div>
+                <div class="bottom-links">
+                    <a href="#" id="link-rules">玩法说明</a>
+                    <a href="#" id="link-about">关于游戏</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 游戏主界面 -->
+        <div id="game-screen" class="screen">
+            <div class="game-header">
+                <div class="header-left">
+                    <span class="age-display">年龄：<strong id="game-age">16</strong>岁</span>
+                    <span class="year-display">第<span id="game-year">1</span>年</span>
+                </div>
+                <div class="header-center">
+                    <span class="stage-display" id="game-stage">学徒期</span>
+                </div>
+                <div class="header-right">
+                    <span class="seed-display">种子：<span id="game-seed">-</span></span>
+                    <span class="choice-count-display">抉择：<strong id="game-choices">0</strong>/<span id="game-max-choices">15</span></span>
+                </div>
+            </div>
+            <div class="game-body">
+                <div class="stats-panel">
+                    <h3>生涯记录</h3>
+                    <div class="stat-item">
+                        <span class="stat-label">🔧 技艺</span>
+                        <div class="stat-bar"><div class="stat-fill" id="stat-skill" style="width:30%"></div></div>
+                        <span class="stat-val" id="val-skill">30</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">👥 人脉</span>
+                        <div class="stat-bar"><div class="stat-fill" id="stat-network" style="width:20%"></div></div>
+                        <span class="stat-val" id="val-network">20</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">💰 积蓄</span>
+                        <div class="stat-bar"><div class="stat-fill" id="stat-money" style="width:10%"></div></div>
+                        <span class="stat-val" id="val-money">10</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">❤️ 健康</span>
+                        <div class="stat-bar"><div class="stat-fill health-fill" id="stat-health" style="width:80%"></div></div>
+                        <span class="stat-val" id="val-health">80</span>
+                    </div>
+                    <div class="stat-item guilt-stat">
+                        <span class="stat-label">💀 罪孽</span>
+                        <div class="stat-bar"><div class="stat-fill guilt-fill" id="stat-guilt" style="width:5%"></div></div>
+                        <span class="stat-val" id="val-guilt">5</span>
+                    </div>
+                </div>
+                <div class="main-panel">
+                    <div class="pixel-art-box" id="pixel-art-box">
+                        <canvas id="pixel-canvas" width="160" height="120"></canvas>
+                    </div>
+                    <div class="event-log" id="event-log">
+                        <div class="log-entry system">📜 你的槟榔生涯开始了……</div>
+                    </div>
+                    <div class="choices-area" id="choices-area"></div>
+                </div>
+            </div>
+            <div class="game-footer">
+                <button class="btn-small" id="btn-skip">⏩ 快进2年</button>
+                <button class="btn-small btn-danger" id="btn-retire">🏁 金盆洗手</button>
+            </div>
+        </div>
+
+        <!-- 结局画面 -->
+        <div id="ending-screen" class="screen">
+            <div class="ending-container">
+                <h2 class="ending-title" id="ending-title">生涯终结</h2>
+                <div class="ending-card">
+                    <canvas id="summary-canvas" width="360" height="560"></canvas>
+                </div>
+                <div class="ending-actions">
+                    <button class="btn-start" id="btn-restart">重新开始</button>
+                    <button class="btn-small" id="btn-share">📤 分享卡片</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 弹窗：玩法说明 -->
+        <div id="modal-rules" class="modal">
+            <div class="modal-content">
+                <span class="modal-close">&times;</span>
+                <h2>📖 玩法说明</h2>
+                <div class="rules-content">
+                    <h3>核心玩法</h3>
+                    <p>你是一位湖南槟榔行业的从业者。但这<strong>不是</strong>励志创业游戏——你每赚一分钱，都可能沾着别人的血。每次决策后时间推进2年（快进模式5年），经历若干事件后，<strong>国家全面取缔槟榔产业</strong>。</p>
+                    <p><strong>⚠️ 所有终局都是悲惨的失败——除非你抓住金盆洗手的机会。</strong></p>
+                    <p>游戏中每隔一段时间会触发一次<strong>🚪 金盆洗手</strong>事件，这是<strong>唯一的好结局出口</strong>。选择洗手则逃出生天，否则继续沉沦直至悲惨收场。</p>
+                    <p><strong>特殊选项：</strong></p>
+                    <p>🎁 <strong>盲盒</strong> — 选了不知道结果，随机开出好或坏</p>
+                    <p>✊ <strong>猜拳</strong> — 与命运石头剪刀布，赢了奖输了罚</p>
+                    <p>🔮 <strong>伏笔</strong> — 前期选择会在终局产生影响</p>
+                    <p>🔗 <strong>连锁</strong> — 触发后陆续展开系列事件（最多3个）</p>
+                    <p>每个选项有使用次数上限，生涯总抉择次数也有限制。</p>
+                    
+                    <h3>属性</h3>
+                    <p><strong>🔧 技艺</strong> — 越精通越容易让人上瘾，也越难回头。</p>
+                    <p><strong>👥 人脉</strong> — 都是这条黑产链上的人，互相包庇。</p>
+                    <p><strong>💰 积蓄</strong> — 赚的钱越多，良心的债越重。</p>
+                    <p><strong>❤️ 健康</strong> — 嚼槟榔的代价。低了可能死于口腔癌。</p>
+                    <p><strong>💀 罪孽</strong> — 你害过多少人？罪孽越高，结局越惨。</p>
+
+                    <h3>生涯阶段</h3>
+                    <p>16-20岁 → 学徒期 | 20-30岁 → 沉迷期 | 30-45岁 → 巅峰期 | 45-60岁 → 衰退期 | 60岁+ → 终末期</p>
+
+                    <h3>终局</h3>
+                    <p>国家卫健委和市场监管总局联合发文：槟榔全面禁止生产销售。你一生的选择将决定你最后的结局。</p>
+
+                    <h3>结局称号</h3>
+                    <p><strong style="color:#2ecc71;">唯一好结局：</strong>🚪 金盆洗手 · 🌳 回归田园 · 🙏 幡然醒悟 · 🔥 浴火重生</p>
+                    <p><strong style="color:#e74c3c;">悲惨结局：</strong>💀 槟榔陪葬 · 🔥 罪有应得 · 🏃 携款跑路 · 🍂 身败名裂 · 🫥 一无所有 · 😈 槟榔恶魔</p>
+                    <p><strong>本游戏旨在警示：槟榔是一级致癌物，珍爱生命，远离槟榔。</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 弹窗：历史档案 -->
+        <div id="modal-history" class="modal">
+            <div class="modal-content">
+                <span class="modal-close">&times;</span>
+                <h2>📋 历史档案</h2>
+                <div class="history-list" id="history-list">
+                    <p class="empty-hint">暂无存档</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 弹窗：关于 -->
+        <div id="modal-about" class="modal">
+            <div class="modal-content">
+                <span class="modal-close">&times;</span>
+                <h2>关于槟榔江湖</h2>
+                <div class="about-content">
+                    <p>《槟榔江湖》是一款<strong>讽刺警示类</strong>文字模拟游戏。</p>
+                    <p>以湖南槟榔行业为背景，展现一颗槟榔从种植到致癌的罪恶链条。游戏通过黑色幽默的叙事，揭示槟榔产业背后的暴利、欺骗和毁灭。</p>
+                    <p>游戏特色：盲盒、猜拳、伏笔、连锁事件等多种互动方式，每个选择都有代价。</p>
+                    <p><strong>本游戏旨在警示世人。</strong>槟榔江湖没有赢家——做槟榔的人，卖槟榔的人，嚼槟榔的人，最终都是受害者。</p>
+                    <p style="color:#c0392b;margin-top:16px;font-size:1.1em;">⚠️ 槟榔是一级致癌物。珍爱生命，远离槟榔。本游戏不鼓励任何形式的槟榔消费。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast -->
+        <div id="toast" class="toast"></div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>

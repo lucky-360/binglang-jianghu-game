@@ -1,0 +1,760 @@
+/* ===== 基础重置 ===== */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #1a1a2e;
+    --bg-card: #16213e;
+    --bg-dark: #0f0f23;
+    --accent: #e67e22;
+    --accent2: #d35400;
+    --gold: #f1c40f;
+    --text: #ecf0f1;
+    --text-dim: #95a5a6;
+    --danger: #e74c3c;
+    --success: #27ae60;
+    --bar-skill: #e67e22;
+    --bar-network: #7f8c8d;
+    --bar-money: #2ecc71;
+    --bar-guilt: #2c3e50;
+    --bar-health: #e74c3c;
+}
+
+body {
+    font-family: "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+#app {
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    position: relative;
+}
+
+.screen {
+    display: none;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.screen.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== 首页 ===== */
+.home-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 40px 0;
+}
+
+.title-area {
+    text-align: center;
+}
+
+/* 槟榔图标 */
+.title-icon {
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: center;
+}
+
+.betel-svg {
+    animation: nutFloat 3s ease-in-out infinite;
+    filter: drop-shadow(0 6px 16px rgba(0,0,0,0.4));
+}
+
+@keyframes nutFloat {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    25% { transform: translateY(-6px) rotate(2deg); }
+    75% { transform: translateY(-3px) rotate(-2deg); }
+}
+
+.game-title {
+    font-size: 2.4em;
+    background: linear-gradient(135deg, var(--accent), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+    text-shadow: none;
+}
+
+.subtitle {
+    color: var(--text-dim);
+    font-size: 0.95em;
+    letter-spacing: 2px;
+}
+
+/* 出身选择 */
+.origin-select {
+    width: 100%;
+}
+
+.origin-select > label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+    color: var(--text-dim);
+}
+
+.origin-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.origin-card {
+    background: var(--bg-card);
+    border: 2px solid transparent;
+    border-radius: 12px;
+    padding: 12px 10px;
+    cursor: pointer;
+    transition: all 0.25s;
+    text-align: center;
+}
+
+.origin-card:hover {
+    border-color: rgba(230, 126, 34, 0.4);
+    transform: translateY(-2px);
+}
+
+.origin-card.selected {
+    border-color: var(--accent);
+    background: rgba(230, 126, 34, 0.1);
+}
+
+.origin-icon {
+    font-size: 1.6em;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.origin-name {
+    display: block;
+    font-weight: bold;
+    font-size: 0.95em;
+    margin-bottom: 2px;
+}
+
+.origin-desc {
+    display: block;
+    font-size: 0.75em;
+    color: var(--text-dim);
+}
+
+/* 模式选择 */
+.mode-select {
+    width: 100%;
+}
+
+.mode-select > label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+    color: var(--text-dim);
+}
+
+.mode-btns {
+    display: flex;
+    gap: 8px;
+}
+
+.mode-btn {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid rgba(255,255,255,0.15);
+    background: var(--bg-card);
+    color: var(--text);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.2s;
+}
+
+.mode-btn:hover {
+    border-color: var(--accent);
+}
+
+.mode-btn.selected {
+    border-color: var(--accent);
+    background: rgba(230, 126, 34, 0.15);
+    color: var(--accent);
+}
+
+/* 种子输入 */
+.seed-input {
+    width: 100%;
+}
+
+.seed-input > label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9em;
+    color: var(--text-dim);
+}
+
+.seed-input input {
+    width: 100%;
+    padding: 12px;
+    background: var(--bg-card);
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    color: var(--text);
+    font-size: 1em;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.seed-input input:focus {
+    border-color: var(--accent);
+}
+
+/* 按钮 */
+.start-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+}
+
+.btn-start {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.25s;
+    letter-spacing: 4px;
+}
+
+.btn-start:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(230, 126, 34, 0.4);
+}
+
+.btn-start:active {
+    transform: translateY(0);
+}
+
+.btn-history {
+    padding: 10px 24px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--text-dim);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.2s;
+}
+
+.btn-history:hover {
+    border-color: var(--text);
+    color: var(--text);
+}
+
+.btn-small {
+    padding: 8px 16px;
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--text);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85em;
+    transition: all 0.2s;
+}
+
+.btn-small:hover {
+    border-color: var(--accent);
+}
+
+.btn-danger {
+    border-color: rgba(231, 76, 60, 0.4);
+    color: var(--danger);
+}
+
+.btn-danger:hover {
+    border-color: var(--danger);
+    background: rgba(231, 76, 60, 0.1);
+}
+
+/* 底部链接 */
+.bottom-links {
+    display: flex;
+    gap: 20px;
+    margin-top: 8px;
+}
+
+.bottom-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.85em;
+    transition: color 0.2s;
+}
+
+.bottom-links a:hover {
+    color: var(--accent);
+}
+
+/* ===== 游戏界面 ===== */
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    background: var(--bg-dark);
+    border-radius: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.header-left, .header-right {
+    font-size: 0.85em;
+    color: var(--text-dim);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.header-left strong {
+    color: var(--accent);
+}
+
+.header-center .stage-display {
+    background: rgba(230, 126, 34, 0.2);
+    color: var(--accent);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: bold;
+}
+
+.choice-count-display {
+    color: var(--gold);
+}
+
+.choice-count-display strong {
+    font-size: 1.1em;
+}
+
+.game-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* 属性面板 */
+.stats-panel {
+    background: var(--bg-card);
+    border-radius: 10px;
+    padding: 14px;
+}
+
+.stats-panel h3 {
+    font-size: 0.85em;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.stat-item:last-child {
+    margin-bottom: 0;
+}
+
+.stat-label {
+    width: 70px;
+    font-size: 0.8em;
+    flex-shrink: 0;
+}
+
+.stat-bar {
+    flex: 1;
+    height: 8px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.stat-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.6s ease;
+}
+
+#stat-skill { background: var(--bar-skill); }
+#stat-network { background: var(--bar-network); }
+#stat-money { background: var(--bar-money); }
+#stat-fame { background: var(--bar-fame); }
+.health-fill { background: var(--bar-health); }
+
+.stat-val {
+    width: 32px;
+    text-align: right;
+    font-size: 0.8em;
+    font-weight: bold;
+    color: var(--text);
+}
+
+.guilt-stat {
+    opacity: 0.85;
+}
+
+.guilt-fill {
+    background: #2c3e50 !important;
+}
+
+.choice-effect {
+    display: block;
+    font-size: 0.7em;
+    color: #7f8c8d;
+    margin-top: 3px;
+    font-style: italic;
+}
+
+/* 主面板 */
+.main-panel {
+    flex: 1;
+    background: var(--bg-card);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-height: 460px;
+    overflow-y: auto;
+}
+
+/* 像素画 */
+.pixel-art-box {
+    display: flex;
+    justify-content: center;
+    padding: 4px 0;
+}
+
+.pixel-art-box canvas {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    border-radius: 8px;
+    border: 2px solid rgba(255,255,255,0.06);
+    background: rgba(0,0,0,0.2);
+    width: 160px;
+    height: 120px;
+}
+
+.event-log {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.log-entry {
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    line-height: 1.6;
+    animation: fadeInUp 0.4s ease;
+}
+
+.log-entry.system {
+    background: rgba(241, 196, 15, 0.1);
+    border-left: 3px solid var(--gold);
+}
+
+.log-entry.event {
+    background: rgba(52, 152, 219, 0.08);
+    border-left: 3px solid var(--bar-network);
+}
+
+.log-entry.positive {
+    background: rgba(46, 204, 113, 0.08);
+    border-left: 3px solid var(--success);
+}
+
+.log-entry.negative {
+    background: rgba(231, 76, 60, 0.08);
+    border-left: 3px solid var(--danger);
+}
+
+.log-entry.choice {
+    background: rgba(230, 126, 34, 0.08);
+    border-left: 3px solid var(--accent);
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 选择区域 */
+.choices-area {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.choice-btn {
+    padding: 12px 16px;
+    background: var(--bg-dark);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--text);
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 0.9em;
+    transition: all 0.2s;
+    line-height: 1.4;
+}
+
+.choice-btn:hover {
+    border-color: var(--accent);
+    background: rgba(230, 126, 34, 0.1);
+    transform: translateX(4px);
+}
+
+.choice-btn .choice-effect {
+    display: block;
+    font-size: 0.75em;
+    color: var(--text-dim);
+    margin-top: 4px;
+}
+
+/* 金盆洗手按钮特殊样式 */
+.choice-btn.quit-option {
+    border-color: rgba(46, 204, 113, 0.5);
+    background: rgba(46, 204, 113, 0.08);
+}
+
+.choice-btn.quit-option:hover {
+    border-color: var(--success);
+    background: rgba(46, 204, 113, 0.18);
+    transform: translateX(4px);
+}
+
+/* 游戏底部 */
+.game-footer {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    justify-content: center;
+}
+
+/* ===== 结局画面 ===== */
+.ending-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.ending-title {
+    font-size: 1.5em;
+    color: var(--gold);
+}
+
+.ending-card {
+    background: var(--bg-dark);
+    border-radius: 12px;
+    padding: 4px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+.ending-card canvas {
+    display: block;
+    border-radius: 10px;
+}
+
+.ending-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.ending-actions .btn-start {
+    width: auto;
+    padding: 12px 32px;
+}
+
+/* ===== 弹窗 ===== */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.7);
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background: var(--bg-card);
+    border-radius: 16px;
+    padding: 24px;
+    max-width: 440px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    animation: modalIn 0.3s ease;
+}
+
+@keyframes modalIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    font-size: 1.5em;
+    cursor: pointer;
+    color: var(--text-dim);
+    transition: color 0.2s;
+}
+
+.modal-close:hover {
+    color: var(--text);
+}
+
+.modal-content h2 {
+    margin-bottom: 16px;
+    font-size: 1.2em;
+}
+
+.rules-content h3, .about-content h3 {
+    color: var(--accent);
+    margin: 14px 0 6px;
+    font-size: 0.95em;
+}
+
+.rules-content p, .about-content p {
+    font-size: 0.85em;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 6px;
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.history-item {
+    background: var(--bg-dark);
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.history-item:hover {
+    background: rgba(230, 126, 34, 0.1);
+}
+
+.history-item .hi-title {
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.history-item .hi-seed {
+    font-size: 0.75em;
+    color: var(--text-dim);
+}
+
+.history-item .hi-delete {
+    color: var(--danger);
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+.empty-hint {
+    color: var(--text-dim);
+    text-align: center;
+    padding: 20px;
+}
+
+/* ===== Toast ===== */
+.toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--bg-dark);
+    color: var(--text);
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 0.9em;
+    z-index: 200;
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.toast.show {
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 400px) {
+    .game-title { font-size: 1.8em; }
+    .origin-cards { grid-template-columns: 1fr; }
+    .game-header { font-size: 0.75em; }
+}
+
+/* 滚动条美化 */
+.main-panel::-webkit-scrollbar,
+.modal-content::-webkit-scrollbar {
+    width: 4px;
+}
+
+.main-panel::-webkit-scrollbar-track,
+.modal-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.main-panel::-webkit-scrollbar-thumb,
+.modal-content::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.1);
+    border-radius: 2px;
+}
