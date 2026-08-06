@@ -115,7 +115,7 @@
                 </div>
                 <div class="header-right">
                     <span class="seed-display">种子：<span id="game-seed">-</span></span>
-                    <span class="choice-count-display">抉择：<strong id="game-choices">0</strong>/<span id="game-max-choices">15</span></span>
+                    <span class="choice-count-display">抉择：<strong id="game-choices">0</strong>/<span id="game-max-choices">?</span></span>
                 </div>
             </div>
             <div class="game-body">
@@ -158,7 +158,7 @@
                 </div>
             </div>
             <div class="game-footer">
-                <button class="btn-small" id="btn-skip">⏩ 快进2年</button>
+                <button class="btn-small" id="btn-skip">⏩ 快进</button>
                 <button class="btn-small btn-danger" id="btn-retire">🏁 金盆洗手</button>
             </div>
         </div>
@@ -184,32 +184,33 @@
                 <h2>📖 玩法说明</h2>
                 <div class="rules-content">
                     <h3>核心玩法</h3>
-                    <p>你是一位湖南槟榔行业的从业者。但这<strong>不是</strong>励志创业游戏——你每赚一分钱，都可能沾着别人的血。每次决策后时间推进2年（快进模式5年），经历若干事件后，<strong>国家全面取缔槟榔产业</strong>。</p>
+                    <p>你是一位湖南槟榔行业的从业者。但这<strong>不是</strong>励志创业游戏——你每赚一分钱，都可能沾着别人的血。每次决策后时间推进，经历若干事件后，<strong>国家全面取缔槟榔产业</strong>。</p>
                     <p><strong>⚠️ 所有终局都是悲惨的失败——除非你抓住金盆洗手的机会。</strong></p>
-                    <p>游戏中每隔一段时间会触发一次<strong>🚪 金盆洗手</strong>事件，这是<strong>唯一的好结局出口</strong>。选择洗手则逃出生天，否则继续沉沦直至悲惨收场。</p>
-                    <p><strong>特殊选项：</strong></p>
-                    <p>🎁 <strong>盲盒</strong> — 选了不知道结果，随机开出好或坏</p>
-                    <p>✊ <strong>猜拳</strong> — 与命运石头剪刀布，赢了奖输了罚</p>
-                    <p>🔮 <strong>伏笔</strong> — 前期选择会在终局产生影响</p>
-                    <p>🔗 <strong>连锁</strong> — 触发后陆续展开系列事件（最多3个）</p>
-                    <p>每个选项有使用次数上限，生涯总抉择次数也有限制。</p>
+                    <p>游戏中会出现<strong>金盆洗手</strong>事件，这是<strong>唯一的好结局出口</strong>。选择洗手则逃出生天，否则继续沉沦直至悲惨收场。</p>
+                    <p><strong>特殊选项类型：</strong></p>
+                    <p>🎁 <strong>盲盒</strong> — 选了不知道结果，随机开出好或坏（游戏中不显示标签）</p>
+                    <p>✊ <strong>猜拳</strong> — 与命运石头剪刀布，赢了奖输了罚（游戏中不显示标签）</p>
+                    <p>🎲 <strong>概率</strong> — 显示两种可能概率，选后揭晓结果</p>
+                    <p>🔗 <strong>连锁</strong> — 触发后陆续展开系列事件（不显示标签）</p>
                     
                     <h3>属性</h3>
-                    <p><strong>🔧 技艺</strong> — 越精通越容易让人上瘾，也越难回头。</p>
-                    <p><strong>👥 人脉</strong> — 都是这条黑产链上的人，互相包庇。</p>
-                    <p><strong>💰 积蓄</strong> — 赚的钱越多，良心的债越重。</p>
-                    <p><strong>❤️ 健康</strong> — 嚼槟榔的代价。低了可能死于口腔癌。</p>
-                    <p><strong>💀 罪孽</strong> — 你害过多少人？罪孽越高，结局越惨。</p>
+                    <p><strong>🔧 技艺</strong> — 越精通越容易让人上瘾，也越难回头。归零即死。</p>
+                    <p><strong>👥 人脉</strong> — 都是这条黑产链上的人，互相包庇。归零即死。</p>
+                    <p><strong>💰 积蓄</strong> — 赚的钱越多，良心的债越重。归零即死。</p>
+                    <p><strong>❤️ 健康</strong> — 嚼槟榔的代价。归零即死。</p>
+                    <p><strong>💀 罪孽</strong> — 你害过多少人？满100即死。</p>
 
                     <h3>生涯阶段</h3>
-                    <p>16-20岁 → 学徒期 | 20-30岁 → 沉迷期 | 30-45岁 → 巅峰期 | 45-60岁 → 衰退期 | 60岁+ → 终末期</p>
+                    <p>14-22岁 → 入行期 | 22-32岁 → 扩张期 | 32-45岁 → 巅峰期 | 45-55岁 → 衰退期 | 55岁+ → 终末期</p>
 
-                    <h3>终局</h3>
-                    <p>国家卫健委和市场监管总局联合发文：槟榔全面禁止生产销售。你一生的选择将决定你最后的结局。</p>
+                    <h3>模式</h3>
+                    <p><strong>普通模式</strong> — ~30次抉择，~1.5年/次，标准体验</p>
+                    <p><strong>硬核模式</strong> — ~30次抉择，~1年/次，步步紧逼</p>
+                    <p><strong>快进模式</strong> — ~20次抉择，~2年/次，快速体验</p>
 
                     <h3>结局称号</h3>
-                    <p><strong style="color:#2ecc71;">唯一好结局：</strong>🚪 金盆洗手 · 🌳 回归田园 · 🙏 幡然醒悟 · 🔥 浴火重生</p>
-                    <p><strong style="color:#e74c3c;">悲惨结局：</strong>💀 槟榔陪葬 · 🔥 罪有应得 · 🏃 携款跑路 · 🍂 身败名裂 · 🫥 一无所有 · 😈 槟榔恶魔</p>
+                    <p><strong style="color:#2ecc71;">好结局：</strong>金盆洗手 · 回归田园 · 幡然醒悟 · 浴火重生 · 及时抽身 · 烈火焚业 · 新生 · 被唤醒的良心 · 师傅的遗愿 · 改种希望</p>
+                    <p><strong style="color:#e74c3c;">坏结局：</strong>死于槟榔 · 罪有应得 · 一无所有 · 身败名裂 · 江郎才尽 · 众叛亲离 · 一贫如洗 · 罪孽滔天 · 槟榔陪葬 · 携款跑路 · 寿终正寝 · 随波逐流</p>
                     <p><strong>本游戏旨在警示：槟榔是一级致癌物，珍爱生命，远离槟榔。</strong></p>
                 </div>
             </div>
