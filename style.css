@@ -327,7 +327,7 @@ body {
 }
 
 .header-left, .header-right {
-    font-size: 0.85em;
+    font-size: 0.9em;
     color: var(--text-dim);
     display: flex;
     flex-direction: column;
@@ -370,7 +370,7 @@ body {
 }
 
 .stats-panel h3 {
-    font-size: 0.85em;
+    font-size: 0.9em;
     color: var(--text-dim);
     margin-bottom: 12px;
     text-align: center;
@@ -389,7 +389,7 @@ body {
 
 .stat-label {
     width: 70px;
-    font-size: 0.8em;
+    font-size: 0.9em;
     flex-shrink: 0;
 }
 
@@ -416,7 +416,7 @@ body {
 .stat-val {
     width: 32px;
     text-align: right;
-    font-size: 0.8em;
+    font-size: 0.9em;
     font-weight: bold;
     color: var(--text);
 }
@@ -431,9 +431,9 @@ body {
 
 .choice-effect {
     display: block;
-    font-size: 0.7em;
+    font-size: 0.82em;
     color: #7f8c8d;
-    margin-top: 3px;
+    margin-top: 4px;
     font-style: italic;
 }
 
@@ -476,8 +476,8 @@ body {
 .log-entry {
     padding: 10px 14px;
     border-radius: 8px;
-    font-size: 0.9em;
-    line-height: 1.6;
+    font-size: 1em;
+    line-height: 1.7;
     animation: fadeInUp 0.4s ease;
 }
 
@@ -519,16 +519,16 @@ body {
 }
 
 .choice-btn {
-    padding: 12px 16px;
+    padding: 14px 16px;
     background: var(--bg-dark);
     border: 1px solid rgba(255,255,255,0.1);
     color: var(--text);
     border-radius: 8px;
     cursor: pointer;
     text-align: left;
-    font-size: 0.9em;
+    font-size: 1em;
     transition: all 0.2s;
-    line-height: 1.4;
+    line-height: 1.5;
 }
 
 .choice-btn:hover {
@@ -590,18 +590,68 @@ body {
 .ending-card canvas {
     display: block;
     border-radius: 10px;
+    width: 360px;
+    height: 560px;
+    max-width: 90vw;
 }
 
 .ending-actions {
     display: flex;
+    flex-direction: column;
     gap: 12px;
-    flex-wrap: wrap;
-    justify-content: center;
+    align-items: center;
 }
 
 .ending-actions .btn-start {
     width: auto;
     padding: 12px 32px;
+}
+
+.share-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.share-buttons button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    font-weight: bold;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-share-save {
+    background: #555;
+    color: #fff;
+}
+
+.btn-share-wechat {
+    background: #07c160;
+    color: #fff;
+}
+
+.btn-share-qq {
+    background: #12b7f5;
+    color: #fff;
+}
+
+.share-buttons button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.share-hint {
+    font-size: 0.8em;
+    color: #7f8c8d;
+    text-align: center;
+    min-height: 1.2em;
 }
 
 /* ===== 弹窗 ===== */
@@ -733,6 +783,42 @@ body {
 
 .toast.show {
     transform: translateX(-50%) translateY(0);
+}
+
+/* 倒计时进度条 */
+.timer-bar {
+    position: relative;
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 3px;
+    margin-top: 12px;
+    overflow: hidden;
+}
+
+.timer-fill {
+    height: 100%;
+    background: #e67e22;
+    border-radius: 3px;
+    transition: width 0.1s linear, background 0.3s ease;
+    width: 100%;
+}
+
+.timer-text {
+    position: absolute;
+    right: 0;
+    top: -18px;
+    font-size: 0.8em;
+    color: #7f8c8d;
+}
+
+/* 事件日志中的计时器样式 */
+.log-entry .timer-bar {
+    margin-top: 10px;
+}
+
+.log-entry .timer-fill {
+    background: #e67e22;
 }
 
 /* ===== 响应式 ===== */

@@ -62,22 +62,22 @@
                             <div class="origin-card selected" data-origin="xiangtan">
                                 <span class="origin-icon">🏭</span>
                                 <span class="origin-name">湘潭学徒</span>
-                                <span class="origin-desc">槟榔世家，从小耳濡目染</span>
+                                <span class="origin-desc">技艺精湛，但眼界狭窄</span>
                             </div>
                             <div class="origin-card" data-origin="changsha">
                                 <span class="origin-icon">🏙️</span>
                                 <span class="origin-name">长沙商贩</span>
-                                <span class="origin-desc">街头起家，人脉广泛</span>
+                                <span class="origin-desc">人脉广底子厚，身体已被槟榔侵蚀</span>
                             </div>
                             <div class="origin-card" data-origin="yiyang">
                                 <span class="origin-icon">🌾</span>
                                 <span class="origin-name">益阳农户</span>
-                                <span class="origin-desc">种植起家，深谙原料之道</span>
+                                <span class="origin-desc">身体硬朗心地纯朴，但一穷二白</span>
                             </div>
                             <div class="origin-card" data-origin="wailai">
                                 <span class="origin-icon">🚶</span>
                                 <span class="origin-name">外来闯荡</span>
-                                <span class="origin-desc">白手起家，一切靠自己</span>
+                                <span class="origin-desc">身体好良心干净，但什么都不懂</span>
                             </div>
                         </div>
                     </div>
@@ -172,7 +172,21 @@
                 </div>
                 <div class="ending-actions">
                     <button class="btn-start" id="btn-restart">重新开始</button>
-                    <button class="btn-small" id="btn-share">📤 分享卡片</button>
+                    <div class="share-buttons">
+                        <button class="btn-share-save" id="btn-share">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            保存
+                        </button>
+                        <button class="btn-share-wechat" id="btn-share-wechat">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8.5 11a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm5 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm-7.9 2.2c.5.3 1.1.5 1.7.5.3 0 .6 0 .9-.1-.5 1.3-.6 2.7-.3 4 .2.6.5 1.1.9 1.5-.5 0-1-.1-1.5-.2-2.1-.4-3.9-1.6-5-3.2-.6-.9-1-2-1-3.1 0-3.4 3.1-6.2 7-6.7v1.2c-3.4.5-6 2.9-6 5.6 0 1.1.5 2.1 1.3 2.9v-.4zm9.3-6.5c-3.9 0-7 2.8-7 6.3 0 1.8.9 3.5 2.3 4.6.3.2.7.4 1.1.5-.1.4-.2.9-.2 1.3 0 .3 0 .6.1.9.7-.4 1.4-.9 2-1.5.5.1 1.1.2 1.7.2 3.9 0 7-2.8 7-6.3s-3.1-6-7-6zm-4.4 9c-.8 0-1.5-.6-1.5-1.3 0-.8.7-1.5 1.5-1.5s1.5.7 1.5 1.5-.7 1.3-1.5 1.3zm4.5 0c-.8 0-1.5-.6-1.5-1.3 0-.8.7-1.5 1.5-1.5s1.5.7 1.5 1.5-.7 1.3-1.5 1.3z"/></svg>
+                            微信
+                        </button>
+                        <button class="btn-share-qq" id="btn-share-qq">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M21.395 15.035a40.5 40.5 0 0 0-.803-2.264l-1.079-2.695c.001-.032.014-.562.014-.836C19.526 4.632 17.351 0 12 0S4.474 4.632 4.474 9.241c0 .274.013.804.014.836l-1.08 2.695a39.5 39.5 0 0 0-.802 2.264c-1.021 3.283-1.045 4.435 1.108 5.556 2.207 1.15 5.865 1.808 8.286 1.808s6.079-.658 8.286-1.808c2.153-1.121 2.13-2.273 1.109-5.557zM12 3.5c2.5 0 3.5 2 3.5 3.5s-1 2.5-3.5 2.5-3.5-1-3.5-2.5 1-3.5 3.5-3.5z"/></svg>
+                            QQ
+                        </button>
+                    </div>
+                    <p class="share-hint" id="share-hint"></p>
                 </div>
             </div>
         </div>

@@ -10,23 +10,81 @@ class SeededRandom {
 const ORIGINS = {
     xiangtan: {
         name: '湘潭学徒', icon: '🏭',
-        skill: 30, network: 15, money: 8, health: 78, guilt: 3,
-        desc: '你从小在湘潭的槟榔作坊长大。师傅说这行来钱快，你信了。你学会的第一件事不是做槟榔，是往卤水里多加石灰。'
+        skill: 42, network: 10, money: 5, health: 72, guilt: 5,
+        desc: '你从小在湘潭的槟榔作坊长大。师傅说这行来钱快，你信了。你学会的第一件事不是做槟榔，是往卤水里多加石灰。',
+        tagline: '技艺精湛，但眼界狭窄'
     },
     changsha: {
         name: '长沙商贩', icon: '🏙️',
-        skill: 12, network: 35, money: 20, health: 68, guilt: 10,
-        desc: '省城的夜市里，你的槟榔摊挨着臭豆腐和糖油粑粑。你认识这条街上的每一个老顾客——他们的腮帮子一个比一个大。'
+        skill: 15, network: 38, money: 22, health: 62, guilt: 12,
+        desc: '省城的夜市里，你的槟榔摊挨着臭豆腐和糖油粑粑。你认识这条街上的每一个老顾客——他们的腮帮子一个比一个大。',
+        tagline: '人脉广、底子厚，但身体已被槟榔侵蚀'
     },
     yiyang: {
         name: '益阳农户', icon: '🌾',
-        skill: 18, network: 8, money: 6, health: 88, guilt: 2,
-        desc: '你家在益阳乡下种槟榔树。你爹说这东西比水稻赚钱十倍。你不知道城里人嚼这个嚼烂了多少张嘴。'
+        skill: 20, network: 6, money: 3, health: 92, guilt: 0,
+        desc: '你家在益阳乡下种槟榔树。你爹说这东西比水稻赚钱十倍。你不知道城里人嚼这个嚼烂了多少张嘴。',
+        tagline: '身体硬朗、心地纯朴，但一穷二白'
     },
     wailai: {
         name: '外来闯荡', icon: '🚶',
-        skill: 5, network: 5, money: 2, health: 82, guilt: 0,
-        desc: '你从外省来到湖南打工，在工地听工友说槟榔"提神"。你试了一颗，然后看到了商机——工地几百号人，每天都嚼。'
+        skill: 8, network: 4, money: 8, health: 85, guilt: 0,
+        desc: '你从外省来到湖南打工，在工地听工友说槟榔"提神"。你试了一颗，然后看到了商机——工地几百号人，每天都嚼。',
+        tagline: '身体好、良心干净，但什么都不懂'
+    }
+};
+
+// ========== 出身专属开局事件 ==========
+const ORIGIN_EVENTS = {
+    xiangtan: {
+        id: 'origin_xiangtan',
+        title: '师傅的秘密配方',
+        desc: '一天深夜，师傅把你叫到后院。他四下张望了一下，压低声音说："小子，你想不想学真正的绝活？我这配方里有一味料，加进去之后，回头客翻三倍。不过——这东西不太合规。"',
+        choices: [
+            { text: '"师傅教什么我学什么"', effects: { skill: 12, guilt: 15, money: 8 }, result: '你学会了往卤水里加工业石灰和麻黄草提取物的"秘方"。你的槟榔比别人更让人上瘾。从此你走上了一条不归路。', type: 'normal', maxPicks: 1 },
+            { text: '"师傅，这不合适吧……"', effects: { skill: 3, guilt: -5, network: -8 }, result: '师傅脸色一沉："没出息！"从此重要的配方都不让你碰了。你在作坊里的地位一落千丈，但至少睡得着觉。', type: 'foreshadow', foreshadowId: 'refused_secret', maxPicks: 1 },
+            { text: '嘴上答应，暗中观察', effects: {}, result: '', type: 'mystery', mystery: [
+                { effects: { skill: 8, guilt: 8, network: 5 }, result: '你偷偷记下了配方但没有立刻使用。师傅觉得你"懂事"，开始教你更多东西。', weight: 50 },
+                { effects: { skill: 2, guilt: 3 }, result: '你被师傅发现了小动作。他冷笑了几声，把你调去干杂活了。', weight: 50 }
+            ], maxPicks: 1 }
+        ]
+    },
+    changsha: {
+        id: 'origin_changsha',
+        title: '夜市的规矩',
+        desc: '你的槟榔摊是整条夜市最火的。但今晚收摊时，几个胳膊上纹龙的人围住了你："新来的？这片归我们管。每个月交三成利润，保你平安。不交的话——你懂的。"',
+        choices: [
+            { text: '老老实实交保护费', effects: { money: -8, network: 10, guilt: 5 }, result: '你交了钱，从此在夜市有了"靠山"。没人敢在你的摊位闹事，但每个月你都得割肉。你学会了：在这条街上，不黑不白才能活。', type: 'normal', maxPicks: 1 },
+            { text: '"我不吃这套"', effects: {}, result: '', type: 'rps', rps: {
+                win: { effects: { money: 5, network: 8, guilt: -5 }, result: '你硬气了一回，对方居然让步了——原来他们老大是你老顾客，就爱嚼你这口槟榔。' },
+                lose: { effects: { money: -15, health: -10, guilt: 3 }, result: '第二天你的摊子被砸了。你被打得鼻青脸肿。邻摊的臭豆腐老板悄悄跟你说："早说了别惹他们。"' },
+                tie: { effects: { money: -5, network: 3 }, result: '讨价还价之后降到两成。你咬着牙接受了。' }
+            }, maxPicks: 1 },
+            { text: '找其他摊贩联合抵制', effects: { network: 12, guilt: -3, money: -3 }, result: '你挨个说服了夜市的其他摊主。大家联合起来，那伙人最终没敢动你们。你在夜市里有了威望，但也树了敌。', type: 'normal', maxPicks: 1 }
+        ]
+    },
+    yiyang: {
+        id: 'origin_yiyang',
+        title: '城里的诱惑',
+        desc: '你挑着自家种的槟榔果来到镇上集市。一个城里来的批发商尝了你的果子，眼睛亮了："你这果子品质太好了！以后有多少我收多少。不过——你得按我的标准加工。"他递给你一张写着各种化学添加剂名称的纸条。',
+        choices: [
+            { text: '"我只会种果子，不会加那些东西"', effects: { skill: 5, guilt: -10, money: 3 }, result: '批发商摇摇头走了。但你的果子品质在镇上出了名，一些做传统槟榔的师傅开始主动找你拿货。赚得少，但干净。', type: 'foreshadow', foreshadowId: 'clean_farmer', maxPicks: 1 },
+            { text: '为了赚钱，学着加工', effects: { skill: 10, guilt: 12, money: 8 }, result: '你跟着批发商学会了加工。看着那些白色粉末倒进卤水里，你隐约觉得不对，但钞票的味道盖过了一切。', type: 'normal', maxPicks: 1 },
+            { text: '"我自己研究怎么做"', effects: {}, result: '', type: 'mystery', mystery: [
+                { effects: { skill: 8, money: 5, guilt: 3 }, result: '你花了半年自己摸索出了不加化学品的独特工艺。虽然产量低，但品质极好。', weight: 40 },
+                { effects: { skill: 3, money: -2, guilt: 0 }, result: '你自己折腾了好久，做出来的东西没人买。你开始怀疑：是不是不掺东西就赚不到钱？', weight: 60 }
+            ], maxPicks: 1 }
+        ]
+    },
+    wailai: {
+        id: 'origin_wailai',
+        title: '工地的第一桶金',
+        desc: '你在工地搬了一个月砖，发现工友们最大的消费不是烟酒，是槟榔——每天人均消费二十块。你算了一笔账：工地上三百号人，一个月就是十八万的市场。但你一个外地人，人生地不熟，连进货渠道都没有。',
+        choices: [
+            { text: '找本地槟榔摊合作拿货', effects: { money: 10, network: 8, guilt: 5 }, result: '你找到了一个愿意供货的本地摊贩。你在工地上摆了个小摊，生意好得超乎想象。但你不知道，你卖的槟榔用的是最劣质的工业原料。', type: 'normal', maxPicks: 1 },
+            { text: '回老家借钱自己干', effects: { money: 15, network: -3, skill: 3 }, result: '你借了一笔钱，自己买了设备和原料。虽然起步艰难，但利润全是自己的。你很快在工地站稳了脚跟。', type: 'normal', maxPicks: 1 },
+            { text: '"先打工攒钱再考虑"', effects: { health: -5, money: 3, guilt: -5 }, result: '你决定先攒本钱。三个月后，你存够了启动资金。但你也在工地上染上了嚼槟榔的习惯——每天不嚼就浑身没劲。', type: 'normal', maxPicks: 1 }
+        ]
     }
 };
 
@@ -279,7 +337,7 @@ const ALL_EVENTS = [
     },
     {
         id: 'chain_smuggler_start', phase: 'early', originFilter: ['wailai', 'changsha'],
-        title: '特殊的渠道（连锁1/3）',
+        title: '特殊的渠道',
         desc: '一个操着云南口音的人找到你："兄弟，我这有批缅甸槟榔干，价格只要市场价一半。但量大，你吃得下吗？"',
         chain: 'smuggler_chain', chainStep: 1, chainLen: 3,
         choices: [
@@ -294,7 +352,7 @@ const ALL_EVENTS = [
     },
     {
         id: 'chain_smuggler_2', phase: 'mid', originFilter: ['wailai', 'changsha'],
-        title: '做大生意（连锁2/3）',
+        title: '做大生意',
         desc: '云南人又来了，这次带了三个人。"兄弟，上次合作愉快。这次我有一整柜的货，你敢接吗？量大从优，但需要你先付一半定金。"',
         chain: 'smuggler_chain', chainStep: 2, chainLen: 3,
         choices: [
@@ -308,7 +366,7 @@ const ALL_EVENTS = [
     },
     {
         id: 'chain_smuggler_3', phase: 'mid', originFilter: ['wailai', 'changsha'],
-        title: '海关的敲门声（连锁3/3）',
+        title: '海关的敲门声',
         desc: '凌晨五点，有人猛敲你家门。打开门——海关缉私和公安站在门口。"你涉嫌参与槟榔干走私，请跟我们走一趟。"',
         chain: 'smuggler_chain', chainStep: 3, chainLen: 3,
         choices: [
@@ -322,7 +380,7 @@ const ALL_EVENTS = [
     },
     {
         id: 'chain_mouth_1', phase: 'mid', originFilter: null,
-        title: '张嘴困难（连锁1/3）',
+        title: '张嘴困难',
         desc: '你发现自己张嘴越来越费劲，吃热的东西时口腔火辣辣地疼。对着镜子看——口腔黏膜白花花一片，像煮过的猪皮。',
         chain: 'mouth_chain', chainStep: 1, chainLen: 3,
         choices: [
@@ -333,7 +391,7 @@ const ALL_EVENTS = [
     },
     {
         id: 'chain_mouth_2', phase: 'mid', originFilter: null,
-        title: '口腔溃烂（连锁2/3）',
+        title: '口腔溃烂',
         desc: '口腔的疼痛越来越严重。嘴里出现了无法愈合的溃疡，吃什么都疼。你瘦了一大圈。',
         chain: 'mouth_chain', chainStep: 2, chainLen: 3,
         choices: [
@@ -347,7 +405,7 @@ const ALL_EVENTS = [
     },
     {
         id: 'chain_mouth_3', phase: 'late', originFilter: null,
-        title: '确诊（连锁3/3）',
+        title: '确诊',
         desc: '活检结果出来了：早期口腔鳞状细胞癌。医生说必须手术切除部分组织，术后可能影响说话和进食。你瘫坐在医院走廊里。',
         chain: 'mouth_chain', chainStep: 3, chainLen: 3,
         choices: [
@@ -405,7 +463,7 @@ const ALL_EVENTS = [
     },
     {
         id: 'chain_competitor_1', phase: 'mid', originFilter: null,
-        title: '品牌战（连锁1/3）',
+        title: '品牌战',
         desc: '一家大型槟榔企业在你对面开了旗舰店。包装精美、明星代言、买二送一。你的小店门可罗雀。',
         chain: 'competitor_chain', chainStep: 1, chainLen: 3,
         choices: [
@@ -416,7 +474,7 @@ const ALL_EVENTS = [
     },
     {
         id: 'chain_competitor_2', phase: 'mid', originFilter: null,
-        title: '价格战升级（连锁2/3）',
+        title: '价格战升级',
         desc: '大品牌开始玩阴的——在你店门口发传单，用喇叭喊"隔壁的槟榔添加剂超标"。你的生意跌到了谷底。',
         chain: 'competitor_chain', chainStep: 2, chainLen: 3,
         choices: [
@@ -430,7 +488,7 @@ const ALL_EVENTS = [
     },
     {
         id: 'chain_competitor_3', phase: 'mid', originFilter: null,
-        title: '大品牌的没落（连锁3/3）',
+        title: '大品牌的没落',
         desc: '那家槟榔大企业因为食品安全问题上了315晚会。一夜之间股价暴跌，门店纷纷关闭。你曾经的敌人倒了。',
         chain: 'competitor_chain', chainStep: 3, chainLen: 3,
         choices: [
@@ -615,7 +673,7 @@ const ALL_EVENTS = [
         title: '同行之死',
         desc: '你的老伙计——隔壁摊的老王，口腔癌走了。才四十二岁。葬礼上，他老婆哭着说："就是那破槟榔害的！"在场的都是槟榔同行，没一个人敢搭话。',
         choices: [
-            { text: '幡然醒悟，金盆洗手', effects: {}, result: '', type: 'quit', quitTitle: '🙏 幡然醒悟', quitDesc: '你把存货全倒进了河里。老王葬礼上那些不敢搭话的同行的脸，一张张在你脑海里闪过。你关了作坊回了老家。后来你在镇上开了间小卖部，卖烟酒糖茶，唯独不卖槟榔。有人问你以前做什么的，你说："做错过一些事，现在不了。"' },
+            { text: '幡然醒悟，金盆洗手', effects: {}, result: '', type: 'quit', quitTitle: '\u00A7 幡然醒悟', quitDesc: '你把存货全倒进了河里。老王葬礼上那些不敢搭话的同行的脸，一张张在你脑海里闪过。你关了作坊回了老家。后来你在镇上开了间小卖部，卖烟酒糖茶，唯独不卖槟榔。有人问你以前做什么的，你说："做错过一些事，现在不了。"' },
             { text: '兔死狐悲，但生意照做', effects: { money: 5, guilt: 10, health: -3 }, result: '葬礼回来你多嚼了两颗槟榔压惊。老王的摊位很快被人盘下来，生意照旧。', type: 'normal' },
             { text: '"他嚼太多了，我控制量就没事"', effects: { guilt: 15, health: -5 }, result: '你用这种自欺欺人的话安慰自己。但你每天嚼的量比老王还多。', type: 'normal' }
         ]
@@ -625,7 +683,7 @@ const ALL_EVENTS = [
         title: '老同学的邀请',
         desc: '一个多年未见的老同学找到你。他现在在广东做农产品加工——荔枝干、龙眼干，正经生意。"你手艺这么好，干嘛非做槟榔？来跟我干吧，赚得少点但晚上睡得着。"',
         choices: [
-            { text: '接受邀请，金盆洗手', effects: {}, result: '', type: 'quit', quitTitle: '🙏 金盆洗手', quitDesc: '你烧掉了所有槟榔配方，坐上了南下的火车。在广东的工厂里你从零开始学做果干加工。虽然收入只有以前的一半，但你终于不用在梦里被那些溃烂的嘴巴追着跑了。十年后你成了工厂的技术主管，娶了当地姑娘，有了孩子。有人问起你的过去，你沉默片刻，说："我以前差点成了杀人犯。"' },
+            { text: '接受邀请，金盆洗手', effects: {}, result: '', type: 'quit', quitTitle: '\u2668 金盆洗手', quitDesc: '你烧掉了所有槟榔配方，坐上了南下的火车。在广东的工厂里你从零开始学做果干加工。虽然收入只有以前的一半，但你终于不用在梦里被那些溃烂的嘴巴追着跑了。十年后你成了工厂的技术主管，娶了当地姑娘，有了孩子。有人问起你的过去，你沉默片刻，说："我以前差点成了杀人犯。"' },
             { text: '"槟榔来钱快，我放不下"', effects: { money: 5, guilt: 10 }, result: '老同学叹了口气走了。你继续守着槟榔摊。但每次想起他说的话，心里总有个声音：你本来可以走的。', type: 'normal' },
             { text: '"等我赚够了就走"', effects: { money: 8, guilt: 5 }, result: '你说服了自己再干两年。但你不知道——两年后还有没有机会。', type: 'normal' }
         ]
@@ -635,7 +693,7 @@ const ALL_EVENTS = [
         title: '乡村振兴的机会',
         desc: '你的堂兄从老家来找你，说村里在搞乡村振兴，政府扶持特色农业。"你在外面做那个害人的东西，村里人都知道了。回来吧，种脐橙一样能赚钱。"',
         choices: [
-            { text: '回去种橙子，重新做人', effects: {}, result: '', type: 'quit', quitTitle: '🌳 回归田园', quitDesc: '你回到了阔别多年的老家。山上的槟榔树被你亲手砍掉，种上了脐橙苗。头两年很苦但你咬牙挺过来了。第三年满山的橙子挂果，金灿灿的一片。你在村里开了农家乐，城里人来采摘都说甜。有人认出你以前是做槟榔的，你笑笑："那都是上辈子的事了。"' },
+            { text: '回去种橙子，重新做人', effects: {}, result: '', type: 'quit', quitTitle: '\u2663 回归田园', quitDesc: '你回到了阔别多年的老家。山上的槟榔树被你亲手砍掉，种上了脐橙苗。头两年很苦但你咬牙挺过来了。第三年满山的橙子挂果，金灿灿的一片。你在村里开了农家乐，城里人来采摘都说甜。有人认出你以前是做槟榔的，你笑笑："那都是上辈子的事了。"' },
             { text: '"我没脸回去"', effects: { money: 3, guilt: 8, health: -3 }, result: '你低下了头。堂兄默默离开。你继续守着槟榔摊——但你离老家越来越远了。', type: 'normal' },
             { text: '"种橙子哪有槟榔来钱快"', effects: { money: 5, guilt: 15, health: -3 }, result: '你嗤之以鼻。堂兄摇头："你早晚会后悔的。"', type: 'normal' }
         ]
@@ -645,7 +703,7 @@ const ALL_EVENTS = [
         title: '最后的救赎',
         desc: '你的身体已经发出严重警告：口腔溃烂、牙龈萎缩、吞咽困难。医生下了最后通牒——再不戒槟榔，最多两年。你坐在空荡荡的店里，看着满墙的槟榔包装袋，忽然觉得它们像一张张催命符。',
         choices: [
-            { text: '烧掉所有存货，彻底转行', effects: {}, result: '', type: 'quit', quitTitle: '🔥 浴火重生', quitDesc: '一把火烧掉了半生心血。火光映着你的脸，你泪流满面，但心里却前所未有的轻松。你回老家种地去了——种的是有机蔬菜，不是槟榔。有人问起你以前做什么的，你说："我以前干过一件很蠢的事，现在不干了。"' },
+            { text: '烧掉所有存货，彻底转行', effects: {}, result: '', type: 'quit', quitTitle: '\u2665 浴火重生', quitDesc: '一把火烧掉了半生心血。火光映着你的脸，你泪流满面，但心里却前所未有的轻松。你回老家种地去了——种的是有机蔬菜，不是槟榔。有人问起你以前做什么的，你说："我以前干过一件很蠢的事，现在不干了。"' },
             { text: '"反正也活不长了，就这样吧"', effects: { health: -30, guilt: 25 }, result: '你放弃了挣扎。每天机械地做槟榔、卖槟榔、嚼槟榔。你不知道自己是在等死，还是在等什么。', type: 'normal' },
             { text: '把店传给徒弟，自己躲起来', effects: { skill: -10, money: 15, guilt: 10, health: -5 }, result: '你拿了笔转让费躲到了乡下。徒弟继续经营着你创下的"品牌"，继续害着下一批人。', type: 'normal' }
         ]
@@ -658,7 +716,7 @@ const ALL_EVENTS = [
         choices: [
             { text: '开始偷偷转移资产', effects: { money: 10, guilt: 5 }, result: '你把一部分钱转到了老婆名下，把仓库的货也分散到几个地方。狡兔三窟。', type: 'normal' },
             { text: '加入行业协会，参与游说', effects: { money: -10, network: 15, guilt: 15 }, result: '你们凑钱去省里"做工作"。你看到了这个行业最后的挣扎——像一个癌症晚期病人。', type: 'normal' },
-            { text: '提前金盆洗手', effects: {}, result: '', type: 'quit', quitTitle: '⏰ 及时抽身', quitDesc: '你在政策落地前一年卖掉了所有资产。你用这笔钱在海南开了家民宿，面朝大海。偶尔有客人认出你——"你是不是以前做槟榔的？"你说："那都是上辈子的事了。来，尝尝我们自己种的椰子。"' }
+            { text: '提前金盆洗手', effects: {}, result: '', type: 'quit', quitTitle: '\u2666 及时抽身', quitDesc: '你在政策落地前一年卖掉了所有资产。你用这笔钱在海南开了家民宿，面朝大海。偶尔有客人认出你——"你是不是以前做槟榔的？"你说："那都是上辈子的事了。来，尝尝我们自己种的椰子。"' }
         ]
     },
     {
@@ -721,7 +779,7 @@ const ALL_EVENTS = [
         choices: [
             { text: '默默接受，转身离开', effects: { money: -30, guilt: -5 }, result: '你最后看了一眼仓库，头也不回地走了。你用了大半辈子才明白——有些钱不该赚。', type: 'normal' },
             { text: '组织同行上访', effects: { money: -10, network: -10, guilt: 10 }, result: '你们去省里上访，要求"给槟榔产业一条活路"。但没人同情你们——你们给过那些患者活路吗？', type: 'normal' },
-            { text: '一把火烧掉一切', effects: {}, result: '', type: 'quit', quitTitle: '🔥 烈火焚业', quitDesc: '你在仓库门口浇上汽油，一根火柴扔了进去。火光冲天，消防车呼啸而来。警察问你为什么放火，你说："烧的不是槟榔，是我的罪。"你被拘留了十五天。出来时一无所有——但你觉得比任何时候都轻松。' }
+            { text: '一把火烧掉一切', effects: {}, result: '', type: 'quit', quitTitle: '\u2660 烈火焚业', quitDesc: '你在仓库门口浇上汽油，一根火柴扔了进去。火光冲天，消防车呼啸而来。警察问你为什么放火，你说："烧的不是槟榔，是我的罪。"你被拘留了十五天。出来时一无所有——但你觉得比任何时候都轻松。' }
         ]
     },
     {
@@ -736,7 +794,7 @@ const ALL_EVENTS = [
     },
     {
         id: 'chain_cancer_1', phase: 'late', originFilter: null,
-        title: '晚期（连锁1/3）',
+        title: '晚期',
         desc: '你被确诊为口腔癌晚期。医生说已经扩散到淋巴了，手术意义不大。建议你做化疗，但五年生存率不到20%。',
         chain: 'cancer_chain', chainStep: 1, chainLen: 3,
         choices: [
@@ -747,7 +805,7 @@ const ALL_EVENTS = [
     },
     {
         id: 'chain_cancer_2', phase: 'late', originFilter: null,
-        title: '病危通知（连锁2/3）',
+        title: '病危通知',
         desc: '你被下了病危通知。家人都来了，站在床边。你想说话但嘴巴已经张不开了——肿瘤把整个口腔堵死了。',
         chain: 'cancer_chain', chainStep: 2, chainLen: 3,
         choices: [
@@ -758,7 +816,7 @@ const ALL_EVENTS = [
     },
     {
         id: 'chain_cancer_3', phase: 'late', originFilter: null,
-        title: '最后一颗槟榔（连锁3/3）',
+        title: '最后一颗槟榔',
         desc: '临终关怀病房里，你已说不出话。护士问你要什么，你颤抖着手指向床头柜——那里还有半包没吃完的槟榔。',
         chain: 'cancer_chain', chainStep: 3, chainLen: 3,
         choices: [
@@ -773,7 +831,7 @@ const ALL_EVENTS = [
         title: '陌生人的善意',
         desc: '一个年轻人走进你的店。他掏出一张照片——上面是一个没了下巴的老人。"这是我爸。嚼了三十年槟榔，去年走的。"他把照片放在柜台上，看着你："收手吧。趁还来得及。"',
         choices: [
-            { text: '关店，从此不卖槟榔', effects: {}, result: '', type: 'quit', quitTitle: '🌟 被唤醒的良心', quitDesc: '你把那张照片贴在了店门上，然后锁了门，再也没回来。后来你去了云南，在一个小镇上教孩子们种咖啡。偶尔有游客问起你的过去，你拿出那张照片说："这是一个陌生人的爸爸。他救了我。"' },
+            { text: '关店，从此不卖槟榔', effects: {}, result: '', type: 'quit', quitTitle: '\u263C 被唤醒的良心', quitDesc: '你把那张照片贴在了店门上，然后锁了门，再也没回来。后来你去了云南，在一个小镇上教孩子们种咖啡。偶尔有游客问起你的过去，你拿出那张照片说："这是一个陌生人的爸爸。他救了我。"' },
             { text: '"谢谢你，但我没办法"', effects: { guilt: 10, health: -3 }, result: '年轻人失望地走了。他把照片留在了柜台上。你收了起来——不知道为什么，你一直没扔。', type: 'normal' },
             { text: '给他一笔钱表示歉意', effects: { money: -10, guilt: -8 }, result: '年轻人没收钱。"我不是来要钱的。我是来救你的。"他说完转身走了。你看着他的背影，很久没动。', type: 'normal' }
         ]
@@ -784,7 +842,7 @@ const ALL_EVENTS = [
         title: '师傅的遗言',
         desc: '师傅快不行了。他躺在病床上，嘴里插着管子——口腔癌晚期。他示意你过去，用笔在纸上写："别做了。我这一辈子害了太多人。你是最后一个徒弟，别走我的路。"',
         choices: [
-            { text: '在师傅面前发誓不再做槟榔', effects: { guilt: -25, skill: -5 }, result: '你当着师傅的面烧了祖传配方。师傅闭上了眼睛——他走得很安详。', type: 'quit', quitTitle: '🕯️ 师傅的遗愿', quitDesc: '你烧掉了三代祖传的配方。师兄弟们说你疯了，但你知道——这是师傅用命换来的醒悟。后来你在湘潭开了家米粉店，生意红火。有人问你怎么不做槟榔了，你说："我师傅临终前说了一句话——有些东西不该传下去。"' },
+            { text: '在师傅面前发誓不再做槟榔', effects: { guilt: -25, skill: -5 }, result: '你当着师傅的面烧了祖传配方。师傅闭上了眼睛——他走得很安详。', type: 'quit', quitTitle: '\u2020 师傅的遗愿', quitDesc: '你烧掉了三代祖传的配方。师兄弟们说你疯了，但你知道——这是师傅用命换来的醒悟。后来你在湘潭开了家米粉店，生意红火。有人问你怎么不做槟榔了，你说："我师傅临终前说了一句话——有些东西不该传下去。"' },
             { text: '答应师傅但没做到', effects: { guilt: 15, health: -5 }, result: '你答应了师傅，但师傅走后你还是继续做。你告诉自己"等赚够了就收手"。但你知道——你骗了师傅，也骗了自己。', type: 'normal' },
             { text: '"师傅你放心，我会改良配方"', effects: { guilt: 10, skill: 5 }, result: '你没答应不做，但答应改良。师傅失望地闭上了眼睛。你后来确实改良了配方——但你心里清楚，改良过的槟榔一样致癌。', type: 'normal' }
         ]
@@ -794,7 +852,7 @@ const ALL_EVENTS = [
         title: '夜市拆迁',
         desc: '政府要拆这条夜市了。你在这里摆了二十年的摊，这里有你所有的故事。拆迁办给了两个选择：拿补偿金走人，或者搬到更偏的新市场。',
         choices: [
-            { text: '拿补偿金，趁机转行', effects: { money: 15, guilt: -10 }, result: '你拿了拆迁款，没有去新市场。你在小区门口开了家便利店——卖零食饮料，不卖槟榔。街坊邻居都说你变好了。', type: 'quit', quitTitle: '🏪 新生', quitDesc: '拆迁款加上积蓄，你在小区门口开了家便利店。货架上摆满了零食饮料，唯独没有槟榔。有老顾客来找，你说："不卖了。嚼那个不好。"后来你的便利店成了社区里的"良心店"，街坊都说你变了一个人。' },
+            { text: '拿补偿金，趁机转行', effects: { money: 15, guilt: -10 }, result: '你拿了拆迁款，没有去新市场。你在小区门口开了家便利店——卖零食饮料，不卖槟榔。街坊邻居都说你变好了。', type: 'quit', quitTitle: '\u2668 新生', quitDesc: '拆迁款加上积蓄，你在小区门口开了家便利店。货架上摆满了零食饮料，唯独没有槟榔。有老顾客来找，你说："不卖了。嚼那个不好。"后来你的便利店成了社区里的"良心店"，街坊都说你变了一个人。' },
             { text: '搬到新市场继续干', effects: { money: 5, guilt: 5 }, result: '你搬到了更偏远的新市场。老顾客流失了大半，但你还想再干几年。', type: 'normal' },
             { text: '拿补偿金扩大规模', effects: { money: 20, guilt: 15 }, result: '你用拆迁款在新市场盘下了三个摊位。你的槟榔帝国反而更大了。但你也离"收手"越来越远。', type: 'normal' }
         ]
@@ -804,7 +862,7 @@ const ALL_EVENTS = [
         title: '土地流转',
         desc: '村里的槟榔地要被征收了。政府要建工业园。补偿款不少，但你家的槟榔树要被全部砍掉。你爹站在田埂上，老泪纵横。',
         choices: [
-            { text: '拿补偿款转种别的', effects: { money: 15, guilt: -15 }, result: '你拿着补偿款种上了猕猴桃。三年后猕猴桃丰收，你说"早知道就不种槟榔了"。', type: 'quit', quitTitle: '🌿 改种希望', quitDesc: '槟榔树全被砍了。你拿着补偿款引进了猕猴桃品种。头两年村里人笑你傻——猕猴桃哪有槟榔赚钱。第三年猕猴桃挂果，一亩赚了三万。你成了全县的"转型明星"，电视台来采访你，你说："种槟榔是害人，种水果是养人。"' },
+            { text: '拿补偿款转种别的', effects: { money: 15, guilt: -15 }, result: '你拿着补偿款种上了猕猴桃。三年后猕猴桃丰收，你说"早知道就不种槟榔了"。', type: 'quit', quitTitle: '\u2663 改种希望', quitDesc: '槟榔树全被砍了。你拿着补偿款引进了猕猴桃品种。头两年村里人笑你傻——猕猴桃哪有槟榔赚钱。第三年猕猴桃挂果，一亩赚了三万。你成了全县的"转型明星"，电视台来采访你，你说："种槟榔是害人，种水果是养人。"' },
             { text: '拿了补偿金去城里做槟榔生意', effects: { money: 10, guilt: 10 }, result: '你用补偿款在城里开了家槟榔加工厂。你从种槟榔变成了做槟榔——越陷越深。', type: 'normal' },
             { text: '抗拒征收，守住槟榔园', effects: {}, result: '', type: 'blind', blind: [
                 { effects: { money: 5, guilt: 5 }, result: '你成了钉子户，最后多拿了些补偿款。但槟榔园还是被推了。', weight: 60 },
@@ -916,7 +974,9 @@ class Game {
         document.getElementById('btn-skip').addEventListener('click', () => this.skipYears());
         document.getElementById('btn-retire').addEventListener('click', () => this.retire());
         document.getElementById('btn-restart').addEventListener('click', () => this.restart());
-        document.getElementById('btn-share').addEventListener('click', () => this.shareCard());
+        document.getElementById('btn-share').addEventListener('click', () => this.saveCard());
+        document.getElementById('btn-share-wechat').addEventListener('click', () => this.shareToWechat());
+        document.getElementById('btn-share-qq').addEventListener('click', () => this.shareToQQ());
         document.querySelectorAll('.modal-close').forEach(btn => btn.addEventListener('click', () => btn.closest('.modal').classList.remove('active')));
         document.querySelectorAll('.modal').forEach(m => m.addEventListener('click', e => { if (e.target === m) m.classList.remove('active'); }));
         this.loadHistory();
@@ -962,7 +1022,14 @@ class Game {
         this.addLog('system', `📜 ${origin.desc}`);
         this.addLog('system', `🎲 种子：${seed} | ${this.getModeName(mode)}`);
         this.addLog('event', `你以「${origin.name}」的身份踏入了槟榔江湖。那年你${this.state.age}岁，还不知道这条路通向何方。`);
-        setTimeout(() => this.triggerEvent(), 600);
+
+        // 先触发出身专属开局事件
+        const originEvent = ORIGIN_EVENTS[originKey];
+        if (originEvent) {
+            setTimeout(() => this.renderEvent(originEvent), 600);
+        } else {
+            setTimeout(() => this.triggerEvent(), 600);
+        }
     }
 
     buildPhasePools() {
@@ -1040,22 +1107,33 @@ class Game {
         // 抉择次数用尽，触发终局
         if (!this.state.finalTriggered && this.state.totalChoices >= this.state.maxTotalChoices) {
             this.state.finalTriggered = true;
-            this.addLog('system', '⚠️ 命运之轮终于停转。时代的铡刀落了下来——');
-            this.addLog('negative', '📜 红头文件：槟榔产业全面取缔。一个害人的时代，终于结束了。');
+            this.addLog('system', '\u26A0\uFE0F 命运之轮终于停转。时代的铡刀落了下来——');
+            this.addLog('negative', '\uD83D\uDCDC 红头文件：槟榔产业全面取缔。一个害人的时代，终于结束了。');
             this.renderEvent(FINAL_EVENT);
             return;
         }
 
         // 硬核模式：偶尔跳过事件
         if (this.state.mode === 'hardcore' && this.state.rng.next() < 0.08) {
-            this.addLog('system', '⏳ 时光飞逝，世事无常……');
+            this.addLog('system', '\u23F3 时光飞逝，世事无常……');
             this.advanceYears(this.state.yearsPerEvent);
             if (this.checkDeath()) return;
             setTimeout(() => this.triggerEvent(), 300);
             return;
         }
 
-        // 金盆洗手事件
+        // 【优先级最高】待触发连锁事件 — 必须连续，不穿插任何其他事件
+        if (this.state.pendingChain) {
+            const chainEvent = ALL_EVENTS.find(e => e.id === this.state.pendingChain);
+            if (chainEvent) {
+                this.state.pendingChain = null;
+                this.addLog('system', '\uD83D\uDD17 连锁事件继续……');
+                this.renderEvent(chainEvent);
+                return;
+            }
+        }
+
+        // 金盆洗手事件 — 只在没有待触发连锁事件时才检查
         const quitOffers = ALL_EVENTS.filter(e => e.type === 'quit');
         const usedQuits = quitOffers.filter(e => this.eventCooldown[e.id]);
         const totalChoices = this.state.totalChoices;
@@ -1067,29 +1145,6 @@ class Game {
             if (nextQuit) {
                 this.eventCooldown[nextQuit.id] = true;
                 this.renderEvent(nextQuit);
-                return;
-            }
-        }
-
-        // 待触发连锁事件
-        if (this.state.pendingChain) {
-            const chainEvent = ALL_EVENTS.find(e => e.id === this.state.pendingChain);
-            if (chainEvent) {
-                this.state.pendingChain = null;
-                this.renderEvent(chainEvent);
-                return;
-            }
-        }
-
-        // 活跃连锁随机触发
-        const activeChains = Object.entries(this.state.chainState).filter(([,v]) => v.step > 0 && v.step < v.len);
-        if (activeChains.length > 0 && this.state.rng.next() < 0.5) {
-            const [chainId, chainData] = this.state.rng.pick(activeChains);
-            const nextId = `${chainId}_${chainData.step + 1}`;
-            const nextEvt = ALL_EVENTS.find(e => e.id === nextId);
-            if (nextEvt) {
-                this.eventCooldown[nextEvt.id] = true;
-                this.renderEvent(nextEvt);
                 return;
             }
         }
@@ -1158,8 +1213,18 @@ class Game {
         const ca = document.getElementById('choices-area');
         const el = document.getElementById('event-log');
         this.renderPixelArt(event.image || event.id);
-        // 隐藏抉择上限和类型标签
+
+        // 根据事件复杂度计算时间限制
+        const choiceCount = event.choices.length;
+        const descLen = event.desc.length;
+        const timeLimit = Math.max(8, Math.min(20, Math.floor(descLen / 8) + choiceCount * 2));
+
         this.addLog('event', `<strong>${event.title}</strong><br>${event.desc}`);
+
+        // 清理旧进度条残留（event-log 中可能还留着旧的 timer-bar）
+        document.querySelectorAll('#event-log .timer-bar').forEach(el => el.remove());
+
+        // 选项 + 进度条放在 choices-area 中
         ca.innerHTML = '';
         event.choices.forEach((choice, idx) => {
             const btn = document.createElement('button');
@@ -1170,28 +1235,81 @@ class Game {
             const maxP = choice.maxPicks !== undefined ? choice.maxPicks : 99;
             let limitText = '';
             if (maxP < 99) { limitText = ` [${used}/${maxP}]`; if (used >= maxP) { disabled = true; reqText = ' (已用尽)'; } }
-            // 概率选项显示概率
             let probText = '';
             if (choice.type === 'probability' && choice.probability) {
                 probText = ' <span style="font-size:0.75em;color:#f39c12;">(' + choice.probability.map(p => p.chance + '%').join('/') + ')</span>';
             }
             const effectsText = choice.type === 'probability' ? '' : this.formatEffects(choice.effects || {});
-            btn.innerHTML = `${idx + 1}. ${choice.text}${probText}${reqText}${limitText}<span class="choice-effect">${effectsText}</span>`;
+            // 开头事件（origin_开头）不显示序号和次数
+            const isOriginEvent = event.id && event.id.startsWith('origin_');
+            const numText = isOriginEvent ? '' : `${idx + 1}. `;
+            const limText = isOriginEvent ? '' : limitText;
+            btn.innerHTML = `${numText}${choice.text}${probText}${reqText}${limText}<span class="choice-effect">${effectsText}</span>`;
             if (disabled) { btn.style.opacity = '0.4'; btn.style.cursor = 'not-allowed'; }
             else btn.addEventListener('click', () => this.applyChoice(choice, event, idx));
             ca.appendChild(btn);
         });
+
+        // 进度条放在选项下方，用唯一 id 避免冲突
+        const uniqId = 'timer-fill-' + Date.now();
+        const uniqTextId = 'timer-text-' + Date.now();
+        const timerDiv = document.createElement('div');
+        timerDiv.className = 'timer-bar';
+        timerDiv.innerHTML = '<div class="timer-fill" id="' + uniqId + '"></div><span class="timer-text" id="' + uniqTextId + '">' + timeLimit + 's</span>';
+        ca.appendChild(timerDiv);
+
         el.scrollTop = el.scrollHeight;
+
+        // 启动倒计时
+        if (this._timerInterval) clearInterval(this._timerInterval);
+        if (this._timerTimeout) clearTimeout(this._timerTimeout);
+        this._timerRemaining = timeLimit;
+        this._timerTotal = timeLimit;
+        const fillEl = document.getElementById(uniqId);
+        const textEl = document.getElementById(uniqTextId);
+
+        this._timerInterval = setInterval(() => {
+            this._timerRemaining -= 0.1;
+            if (fillEl && textEl) {
+                const pct = Math.max(0, this._timerRemaining / this._timerTotal * 100);
+                fillEl.style.width = pct + '%';
+                textEl.textContent = Math.ceil(this._timerRemaining) + 's';
+                if (pct < 25) fillEl.style.background = '#e74c3c';
+                else if (pct < 50) fillEl.style.background = '#f39c12';
+                else fillEl.style.background = '#e67e22';
+            }
+        }, 100);
+
+        this._timerTimeout = setTimeout(() => {
+            clearInterval(this._timerInterval);
+            const enabled = event.choices.filter((c, i) => {
+                const uk = `${event.id}_${i}`;
+                const u = this.choiceUsage[uk] || 0;
+                const mp = c.maxPicks !== undefined ? c.maxPicks : 99;
+                if (u >= mp) return false;
+                if (c.require) for (const [k, v] of Object.entries(c.require)) if ((this.state[k] || 0) < v) return false;
+                return true;
+            });
+            if (enabled.length > 0) {
+                const pick = this.state.rng.pick(enabled);
+                const pickIdx = event.choices.indexOf(pick);
+                this.addLog('system', '\u23F0 时间到！命运替你做了选择。');
+                this.applyChoice(pick, event, pickIdx);
+            }
+        }, timeLimit * 1000);
     }
 
     applyChoice(choice, event, choiceIdx) {
+        if (this._timerInterval) { clearInterval(this._timerInterval); this._timerInterval = null; }
+        if (this._timerTimeout) { clearTimeout(this._timerTimeout); this._timerTimeout = null; }
+
         const usageKey = `${event.id}_${choiceIdx}`;
         this.choiceUsage[usageKey] = (this.choiceUsage[usageKey] || 0) + 1;
         this.state.totalChoices++;
 
         // 金盆洗手
         if (choice.type === 'quit') {
-            this.addLog('choice', '👉 你终于做出了正确的选择。');
+            this.addLog('choice', '\u25B6 你终于做出了正确的选择。');
             document.getElementById('choices-area').innerHTML = '';
             this.state.ended = true;
             this.state.endingTitle = choice.quitTitle;
@@ -1303,66 +1421,74 @@ class Game {
     calculateEnding() {
         const s = this.state;
         if (s.quitEnding) {
-            return { title: s.endingTitle || '🙏 金盆洗手', desc: s.endingDesc || '你逃出了槟榔江湖。' };
+            return { title: s.endingTitle || '\u263C 金盆洗手', desc: s.endingDesc || '你逃出了槟榔江湖。' };
         }
         // 即死坏结局
         if (s.health <= 0) return {
-            title: '💀 死于槟榔',
+            title: '\u2020 死于槟榔',
             desc: '口腔癌晚期，半边脸烂得不成样子。你用半条命换来的积蓄全扔进了医院。咽气前你含糊不清地说了句什么——护士猜是"后悔"，也可能只是"疼"。槟榔江湖最后一个牺牲品，就是你自己。'
         };
         if (s.skill <= 0) return {
-            title: '📉 江郎才尽',
+            title: '\u2193 江郎才尽',
             desc: '你的手艺被时代抛弃了。年轻人用机器代替手工，用工业香精代替祖传配方。你的槟榔再也卖不出去，作坊关了门，学徒全跑了。你蹲在空荡荡的作坊里嚼着最后一颗槟榔——连这颗都做得不好吃了。'
         };
         if (s.network <= 0) return {
-            title: '🔗 众叛亲离',
+            title: '\u2716 众叛亲离',
             desc: '你坑了太多人——欠供应商的钱不还，骗顾客的配方不说，连亲戚朋友都被你坑遍了。最后没有人愿意接你的电话。你一个人死在出租屋里，尸体三天后才被发现。房东说"终于能把这个槟榔鬼赶出去了"。'
         };
         if (s.money <= 0) return {
-            title: '💸 一贫如洗',
+            title: '\u00A2 一贫如洗',
             desc: '槟榔生意做不下去了。你想转行但除了做槟榔什么都不会。积蓄花光后你开始在街上捡瓶子卖。曾经你一天赚的钱比普通人一个月都多，现在你翻垃圾桶找饭吃。最讽刺的是——你翻到的垃圾桶里全是槟榔包装袋。'
         };
         if (s.guilt >= 100) return {
-            title: '😈 罪孽滔天',
+            title: '\u2620 罪孽滔天',
             desc: '你的一生害了太多人。工业石灰、违禁添加物、向未成年人销售——你什么都干过。罪孽值满的那一刻，你感到一阵寒意。你知道那些因为你失去下巴、失去舌头、失去生命的人，都在另一个世界等你。你不会有好下场的。'
         };
         // 终局结局
         if (s.finalTriggered) {
             if (s.health <= 15) return {
-                title: '💀 槟榔陪葬',
+                title: '\u2020 槟榔陪葬',
                 desc: '取缔令下来那天你正在医院做化疗。口腔癌晚期，半边脸已经烂得不成样子。你用半条命换来的积蓄全扔进了医院。咽气前你含糊不清地说了句什么——护士猜是"后悔"，也可能只是"疼"。'
             };
             if (s.guilt >= 50) return {
-                title: '🔥 罪有应得',
+                title: '\u2691 罪有应得',
                 desc: '你明知槟榔致癌却从不提醒顾客。你往卤水里加工业石灰，往配方里掺上瘾成分。产业取缔那天你不仅失去了一切，还被查出多项违法。你在铁窗里度过了最后的日子，没有一个人来探视。'
             };
             if (s.money >= 40) return {
-                title: '🏃 携款跑路',
+                title: '\u2192 携款跑路',
                 desc: '你在取缔前转移了资产。换了城市，改了名字，做起了别的生意。但每个深夜你都会梦到那些嚼着你的槟榔患上癌症的脸。钱是保住了，但你从此不敢照镜子。你成了一个有钱的逃犯——逃的不是法律，是自己的良心。'
             };
             if (s.guilt >= 30) return {
-                title: '🍂 身败名裂',
+                title: '\u2716 身败名裂',
                 desc: '槟榔产业被全面取缔。你的作坊关停，存货被销毁。有人把你过去的"事迹"发到了网上——工业石灰、学生套餐、虚假宣传。你走在街上被人认出来，被人指着鼻子骂"害人精"。你连门都不敢出了。'
             };
             return {
-                title: '🫥 一无所有',
+                title: '\u2205 一无所有',
                 desc: '封条贴上的那一刻你才发现自己什么都没有了。钱没攒下，身体毁了，家人早就被你气走了。你蹲在店门口看着执法人员把槟榔一箱箱搬走。一辈子就干了这一件事，现在这件事被定性为犯罪。你连后悔的力气都没有了。'
             };
         }
         // 年龄到了
         if (s.age >= 60) return {
-            title: '👴 寿终正寝',
+            title: '\u2020 寿终正寝',
             desc: '你活到了晚年。但你的晚年并不安宁——口腔的疼痛让你吃不了任何东西，没有牙齿的嘴巴说话漏风。你的孩子不愿意靠近你——他们说你的槟榔味太重了。你在养老院的角落里度过了最后的日子，没人记得你的名字。'
         };
         return {
-            title: '🫥 随波逐流',
+            title: '\u2248 随波逐流',
             desc: '你只是一个普通的槟榔从业者。没害过太多人，也没救过什么人。随大流地做槟榔、卖槟榔、嚼槟榔。你的一生就像一颗被嚼烂的槟榔——被人吐在地上，太阳一晒，什么都没留下。'
         };
     }
 
     renderSummaryCard() {
         const canvas = document.getElementById('summary-canvas');
-        const ctx = canvas.getContext('2d'); const W = 360, H = 560; const s = this.state;
+        const dpr = Math.max(window.devicePixelRatio || 1, 2);
+        const W = 360, H = 560;
+        canvas.width = W * dpr;
+        canvas.height = H * dpr;
+        canvas.style.width = W + 'px';
+        canvas.style.height = H + 'px';
+        const ctx = canvas.getContext('2d');
+        ctx.scale(dpr, dpr);
+        const s = this.state;
         const origin = ORIGINS[s.origin];
         const isQuit = s.quitEnding;
         const isDark = !isQuit && (s.finalTriggered || s.guilt >= 40);
@@ -1377,31 +1503,31 @@ class Game {
         ctx.strokeStyle = isQuit ? 'rgba(39,174,96,0.3)' : (isDark ? 'rgba(192,57,43,0.3)' : 'rgba(139,69,19,0.3)');
         ctx.lineWidth = 1; ctx.strokeRect(16, 16, W - 32, H - 32);
 
-        this.drawBetelNut(ctx, W / 2 - 70, 28);
-        ctx.fillStyle = '#f1c40f'; ctx.font = 'bold 22px "PingFang SC","Microsoft YaHei",sans-serif'; ctx.textAlign = 'center';
-        ctx.fillText('槟榔江湖', W / 2 + 10, 55);
+        // 标题 - 只保留文字，去掉 emoji
+        ctx.fillStyle = '#f1c40f'; ctx.font = 'bold 22px sans-serif'; ctx.textAlign = 'center';
+        ctx.fillText('槟榔江湖', W / 2, 55);
         ctx.fillStyle = '#95a5a6'; ctx.font = '13px sans-serif'; ctx.fillText('—— 一颗槟榔的罪恶史 ——', W / 2, 78);
         ctx.strokeStyle = 'rgba(255,255,255,0.12)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(40, 95); ctx.lineTo(W - 40, 95); ctx.stroke();
 
         let y = 120;
         ctx.fillStyle = '#ecf0f1'; ctx.font = '14px sans-serif'; ctx.textAlign = 'left';
-        ctx.fillText(`出身：${origin.icon} ${origin.name}`, 40, y); y += 26;
-        ctx.fillText(`生涯：${s.age}岁 · ${s.year}年`, 40, y); y += 26;
-        ctx.fillText(`种子：${s.seed}`, 40, y);
+        ctx.fillText('出身：' + origin.name, 40, y); y += 26;
+        ctx.fillText('生涯：' + Math.floor(s.age) + '岁 · ' + Math.floor(s.year) + '年', 40, y); y += 26;
+        ctx.fillText('种子：' + s.seed, 40, y);
         y += 35;
 
         ctx.fillStyle = '#f1c40f'; ctx.font = 'bold 13px sans-serif'; ctx.textAlign = 'center'; ctx.fillText('— 生涯结算 —', W / 2, y); y += 28;
 
         const stats = [
-            { label: '技艺', val: s.skill, color: '#8B4513', icon: '🔧' },
-            { label: '人脉', val: s.network, color: '#7f8c8d', icon: '👥' },
-            { label: '积蓄', val: s.money, color: '#27ae60', icon: '💰' },
-            { label: '健康', val: s.health, color: '#e74c3c', icon: '❤️' },
-            { label: '罪孽', val: s.guilt, color: '#2c3e50', icon: '💀' }
+            { label: '技艺', val: s.skill, color: '#8B4513' },
+            { label: '人脉', val: s.network, color: '#7f8c8d' },
+            { label: '积蓄', val: s.money, color: '#27ae60' },
+            { label: '健康', val: s.health, color: '#e74c3c' },
+            { label: '罪孽', val: s.guilt, color: '#2c3e50' }
         ];
         stats.forEach(stat => {
-            const bx = 90, bw = W - 130, bh = 14, by = y;
-            ctx.fillStyle = '#95a5a6'; ctx.font = '11px sans-serif'; ctx.textAlign = 'right'; ctx.fillText(`${stat.icon} ${stat.label}`, bx - 8, by + 11);
+            const bx = 70, bw = W - 120, bh = 14, by = y;
+            ctx.fillStyle = '#95a5a6'; ctx.font = '11px sans-serif'; ctx.textAlign = 'right'; ctx.fillText(stat.label, bx - 8, by + 11);
             ctx.fillStyle = 'rgba(255,255,255,0.06)'; ctx.beginPath(); ctx.roundRect(bx, by, bw, bh, 4); ctx.fill();
             ctx.fillStyle = stat.color; ctx.beginPath(); ctx.roundRect(bx, by, bw * Math.min(stat.val / 100, 1), bh, 4); ctx.fill();
             ctx.fillStyle = '#ecf0f1'; ctx.font = 'bold 11px sans-serif'; ctx.textAlign = 'left'; ctx.fillText(stat.val, bx + bw + 6, by + 11);
@@ -1414,10 +1540,9 @@ class Game {
         ctx.fillStyle = '#bdc3c7'; ctx.font = '11px sans-serif';
         this.wrapText(ctx, s.endingDesc, W - 70).forEach(line => { ctx.fillText(line, W / 2, y); y += 18; });
 
-        y = H - 45;
+        y = H - 40;
         ctx.fillStyle = 'rgba(255,255,255,0.15)'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
-        this.drawBetelNut(ctx, W / 2 - 48, y - 22);
-        ctx.fillText('槟榔江湖 · 警示录', W / 2 + 5, y);
+        ctx.fillText('槟榔江湖 · 警示录', W / 2, y);
         ctx.fillText(isQuit ? '回头是岸，为时不晚' : '珍爱生命，远离槟榔', W / 2, y + 16);
     }
 
@@ -1511,12 +1636,63 @@ class Game {
         document.getElementById('ending-title').textContent = r.title;
     }
 
-    shareCard() {
+    getCardBlob(callback) {
         const canvas = document.getElementById('summary-canvas');
-        canvas.toBlob(blob => {
-            if (navigator.share) { navigator.share({ title:'槟榔江湖 - 警示录', files:[new File([blob],'binglang.png',{type:'image/png'})] }).catch(()=>{}); }
-            else { const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href=url; a.download='binglang.png'; a.click(); URL.revokeObjectURL(url); this.showToast('警示卡已保存！'); }
-        }, 'image/png');
+        canvas.toBlob(blob => callback(blob), 'image/png');
+    }
+
+    saveCard() {
+        this.getCardBlob(blob => {
+            // 优先用原生分享（支持微信/QQ等）
+            if (navigator.share && navigator.canShare && navigator.canShare({ files: [new File([blob], 'binglang.png', { type: 'image/png' })] })) {
+                navigator.share({ title: '槟榔江湖 - 警示录', text: '我在槟榔江湖中得到了结局：' + this.state.endingTitle, files: [new File([blob], 'binglang.png', { type: 'image/png' })] }).catch(() => {});
+            } else {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = 'binglang.png'; a.click();
+                URL.revokeObjectURL(url);
+                this.showToast('图片已保存！可分享到微信/QQ');
+            }
+        });
+    }
+
+    shareToWechat() {
+        this.getCardBlob(blob => {
+            const url = URL.createObjectURL(blob);
+            // 在微信内置浏览器中，直接弹出长按保存提示
+            if (/micromessenger/i.test(navigator.userAgent)) {
+                this.showShareHint('长按上方卡片保存图片，然后分享到朋友圈');
+                // 滚动到卡片位置
+                document.querySelector('.ending-card').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                // 非微信环境：保存图片，提示用户去微信发送
+                const a = document.createElement('a');
+                a.href = url; a.download = 'binglang.png'; a.click();
+                URL.revokeObjectURL(url);
+                this.showToast('图片已保存！去微信发送给好友吧');
+            }
+        });
+    }
+
+    shareToQQ() {
+        this.getCardBlob(blob => {
+            const url = URL.createObjectURL(blob);
+            // 检测 QQ 内置浏览器
+            if (/qq/i.test(navigator.userAgent) && !/micromessenger/i.test(navigator.userAgent)) {
+                this.showShareHint('长按上方卡片保存图片，然后发送到QQ空间或好友');
+                document.querySelector('.ending-card').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                const a = document.createElement('a');
+                a.href = url; a.download = 'binglang.png'; a.click();
+                URL.revokeObjectURL(url);
+                this.showToast('图片已保存！去QQ发送给好友吧');
+            }
+        });
+    }
+
+    showShareHint(msg) {
+        const hint = document.getElementById('share-hint');
+        if (hint) { hint.textContent = msg; setTimeout(() => { hint.textContent = ''; }, 5000); }
     }
 
     restart() {
