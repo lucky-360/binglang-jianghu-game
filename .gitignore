@@ -5,3 +5,6 @@ deploy.html
 node_modules/
 *.log
 *.b64.txt
+
+# 图片素材（game.js 已内联 base64，素材不提交）
+images/

@@ -347,13 +347,6 @@ body {
     font-weight: bold;
 }
 
-.choice-count-display {
-    color: var(--gold);
-}
-
-.choice-count-display strong {
-    font-size: 1.1em;
-}
 
 .game-body {
     flex: 1;
@@ -450,14 +443,14 @@ body {
     overflow-y: auto;
 }
 
-/* 像素画 */
-.pixel-art-box {
+/* 像素画（随事件日志滚动） */
+.event-art {
     display: flex;
     justify-content: center;
-    padding: 4px 0;
+    margin-bottom: 8px;
 }
 
-.pixel-art-box canvas {
+.event-art canvas {
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     border-radius: 8px;
