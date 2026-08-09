@@ -1,5 +1,6 @@
-# 构建产物（由 build-deploy.ps1 生成，用于 EdgeOne 部署）
+# 构建产物（EdgeOne 部署生成）
 deploy.html
+deploy-notext.html
 
 # 依赖与临时文件
 node_modules/

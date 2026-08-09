@@ -1235,10 +1235,10 @@ class Game {
         const ca = document.getElementById('choices-area');
         const el = document.getElementById('event-log');
 
-        // 根据事件复杂度计算时间限制（基础下限12s、上限30s，比旧版更宽松）
+        // 根据事件复杂度计算时间限制（基础下限25s、上限60s，阅读与决策更充裕）
         const choiceCount = event.choices.length;
         const descLen = event.desc.length;
-        const timeLimit = Math.max(12, Math.min(30, Math.floor(descLen / 6) + choiceCount * 3));
+        const timeLimit = Math.max(25, Math.min(60, Math.floor(descLen / 4) + choiceCount * 5));
 
         // 插图随事件滚动：在该事件的日志条目内嵌 canvas 配图
         this.addEventEntry(event);
